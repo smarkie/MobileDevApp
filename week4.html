@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>After School Club</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" >
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" >
+        <script src="https://unpkg.com/vue"></script>
+        
+    </head>
+    <body>
+        <div id="app">
+            <div class="row container">
+                <h1>After School Club</h1>
+                <hr></hr>
+                <div class="col-lg-3 row m-auto">
+                    <figure>
+                        <img height="200px" width="200px"  :src="subjectObj.img2" alt="">
+                    </figure>
+                    <button class="btn btn-info"v-if="canAddToCart" style="max-width:80%; margin-left: 8px;" v-on:click="addToCart">
+                        <span ><i class="fas fa-cart-plus"></i></span>
+                         Add to Cart
+                         ({{cartItemCount}}) 
+                    </button>
+                    <button style="max-width:100%; margin-left: 8px;" disabled = "disabled" v-else>Out of stock</button>
+                </div>
+
+                <div class="col-lg-9 m-auto ">
+                    <h1 v-text=' subject'></h1>
+                    <h2>Location: {{location}}</h2>
+                    <h3 v-text='price'></h3>
+                    <p>Stock: {{subjectObj.showstock}}</p>
+                </div>
+             </div>
+        </div>
+        <script>
+            var schoolClub = new Vue({  //creating vue instance
+
+                el:"#app",
+                data:{  //adding data
+                    id:'1',
+                    subject:'IT',
+                    location:'Hendon',
+                    price:'1000',
+                    subjectObj:{
+                        img2:'pictures/Math.png',
+                        stock: 5,
+                        showstock:5,
+                    },
+                    cart:[],
+                },
+                methods: {  //creating method for adding to cart
+                    addToCart: function () {
+                        this.subjectObj.showstock=this.subjectObj.showstock-1;
+                        this.cart.push(this.id);
+                    }
+                    
+                },
+                computed: { // the Computed Property object
+                    cartItemCount: function() { // the propety name
+                    // its value is calculated when it is called
+                        return this.cart.length || '';
+                    },
+                    canAddToCart: function() {
+                        return this.subjectObj.stock > this.cartItemCount;
+                    }
+                },
+         
+
+        });
+        </script>
+    </body>
+</html>
